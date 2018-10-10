@@ -1387,7 +1387,8 @@ int main(int argc, char *argv[])
 					exit(EXIT_FAILURE);
 				}
 			} else {
-				MSG("INFO: [main] skipping downstream thread creation for server %d\n", ic);
+				MSG("INFO: [main] skipping downstream thread creation for server %d due to servers[%d].live = %d, servers[%d].type = %d, servers[%d].downstream = %d\n",
+                        ic, ic, servers[ic].live, ic, servers[ic].type, ic, servers[ic].downstream);
 			}
 		}
 
