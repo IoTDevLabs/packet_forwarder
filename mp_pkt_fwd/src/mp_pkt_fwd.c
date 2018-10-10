@@ -1377,11 +1377,17 @@ int main(int argc, char *argv[])
     }
 	}
 	if (downstream_enabled == true) {
-		for (ic = 0; ic < serv_count; ic++) if (servers[ic].live == true && servers[ic].type == semtech && servers[ic].downstream == true) {
-			i = pthread_create( &servers[ic].t_down, NULL, (void * (*)(void *))semtech_thread_down, (void *) (long) ic);
-			if (i != 0) {
-				MSG("ERROR: [main] impossible to create downstream thread\n");
-				exit(EXIT_FAILURE);
+		MSG("INFO: [main] downstream is enabled, creating downstream threads\n");
+		for (ic = 0; ic < serv_count; ic++) {
+			if (servers[ic].live == true && servers[ic].type == semtech && servers[ic].downstream == true) {
+				MSG("INFO: [main] creating downstream thread for server %d\n", ic);
+				i = pthread_create( &servers[ic].t_down, NULL, (void * (*)(void *))semtech_thread_down, (void *) (long) ic);
+				if (i != 0) {
+					MSG("ERROR: [main] impossible to create downstream thread for server %d\n", ic);
+					exit(EXIT_FAILURE);
+				}
+			} else {
+				MSG("INFO: [main] skipping downstream thread creation for server %d\n", ic);
 			}
 		}
 
